@@ -2,9 +2,25 @@ package ex09;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.awt.event.ActionEvent;
 
 public class Ex9 {
   private JFrame frame;
+  private ImagePanel panel_1;
 
   /**
    * Launch the application.
@@ -36,5 +52,49 @@ public class Ex9 {
     frame = new JFrame();
     frame.setBounds(100, 100, 450, 300);
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    
+    JPanel panel = new JPanel();
+    frame.getContentPane().add(panel, BorderLayout.WEST);
+    panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+    
+    JLabel lblNewLabel = new JLabel("File Name");
+    panel.add(lblNewLabel);
+    
+    JTextField textField = new JTextField();
+    textField.setColumns(10);
+    //textArea_1.setRows(1);
+    panel.add(textField);
+    
+    JButton btnNewButton = new JButton("Load");
+    btnNewButton.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        try {
+          BufferedImage img = ImageIO.read(new File(textField.getText()));
+          panel_1.setImage(img);
+        }
+        catch(Exception ex) {
+          System.out.println(ex);
+        }
+      }
+    });
+    panel.add(btnNewButton);
+    
+    JButton btnNewButton_1 = new JButton("Binary");
+    panel.add(btnNewButton_1);
+    
+    JButton btnNewButton_2 = new JButton("Negative");
+    panel.add(btnNewButton_2);
+    
+    JScrollPane scrollPane = new JScrollPane();
+    frame.getContentPane().add(scrollPane, BorderLayout.SOUTH);
+    
+    JTextArea textArea = new JTextArea();
+    scrollPane.setViewportView(textArea);
+    
+    JScrollPane scrollPane_1 = new JScrollPane();
+    frame.getContentPane().add(scrollPane_1, BorderLayout.CENTER);
+    
+    panel_1 = new ImagePanel();
+    scrollPane_1.setViewportView(panel_1);
   }
 }
